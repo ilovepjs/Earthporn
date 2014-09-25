@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://www.webglearth.com/v2/api.js"></script>
+    <script type="text/javascript">
+      var earth;
+      function initialize() {
+        earth = new WE.map('earth_div');
+        WE.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(earth);
+        addMarkers();
+      }
+      function addMarkers() {
+        p = {{places|safe}}
+        for (i = 0; i < p.length; i ++) {
+          lat = p[i]['fields']['latitude'];
+          lon = p[i]['fields']['longitude']
+          marker = WE.marker([lat, lon]).addTo(earth);
+          marker.bindPopup("<b>Hello world!</b><br>I am a popup.<br /><span style='font-size:10px;color:#999'>Tip: Another popup is hidden in Cairo..</span>", {maxWidth: 150, closeButton: true}).openPopup();
+  
+        }
+      }
+    </script>
+    <style>
+      html, body{padding: 0; margin: 0;}
+      #earth_div{top: 0; right: 0; bottom: 0; left: 0; position: absolute !important;}
+    </style>
+  </head>
+  <body onload="initialize()">
+    <div id="earth_div"></div>
+  </body>
+</html>
