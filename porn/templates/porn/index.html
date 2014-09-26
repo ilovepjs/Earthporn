@@ -16,7 +16,7 @@
         $("body").keydown(function(e) {
           c = earth.getPosition();
           zoom = Math.round(earth.getZoom());
-          offset = 1.5
+          offset = 1.2
           switch (e.which) {
             case 37: //left arrow
               earth.setCenter([c[0], c[1] - offset]);
@@ -31,10 +31,10 @@
               earth.setCenter([c[0] - offset, c[1]]);
               break;
             case 190: // . pressed
-              earth.setZoom(zoom - 0.5)
+              earth.setZoom(zoom - 1)
               break;
             case 191: // / pressed
-              earth.setZoom(zoom + 0.5)
+              earth.setZoom(zoom + 1)
               break;
             default:
               //nothing
