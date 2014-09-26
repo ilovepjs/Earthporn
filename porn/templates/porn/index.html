@@ -2,16 +2,20 @@
 <html>
   <head>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
     <script src="http://www.webglearth.com/v2/api.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
     <script type="text/javascript">
       var earth;
       function initialize() {
-        earth = new WE.map('earth_div');
+        options = { zoom: 3, position: [140.19537,80] };
+        earth = new WE.map('earth-div', options);
         WE.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(earth);
         addControllers();
         addMarkers();
+        addCountryAutocomplete();
       }
-    
+
       function addControllers() {
         $("body").keydown(function(e) {
           c = earth.getPosition();
@@ -40,6 +44,12 @@
               //nothing
           }
         });
+        // $("#id_country").keydown(function(e) {
+        //   if (e.which == 13) { //enter
+        //     $('#form').submit();
+        //   }
+        //   e.stopPropagation();
+        // });
       }
 
       function addMarkers() {
@@ -56,19 +66,37 @@
           marker.bindPopup($popup.html(), {maxWidth: 150, closeButton: true});
         }
       }
-    </script>
-    <style>
-      html, body{padding: 0; margin: 0;}
-      #earth_div{top: 0; right: 0; bottom: 0; left: 0; position: absolute !important;}
-    </style>
+
+      function addCountryAutocomplete() {
+        $("#id_country").autocomplete({ 
+          select: function() {$('#form').submit();},
+          source: {{countries|safe}}});
+      }
+      </script>
+      <style>
+        html, body{padding: 0; margin: 0;}
+        #earth-div{top: 0; right: 0; bottom: 0; left: 0; position: absolute !important;}
+      </style>
   </head>
+
   <body onload="initialize()">
-    <div id="earth_div"></div>
-  </body>
+    <div id="earth-div"></div>
+    <form id="form" action="porn/country" method="post" style="position: absolute; left: 20px; bottom: 80px">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="fieldWrapper">
+        {{ form.country.errors }}
+        <label for="id_country">Search by country:</label>
+        {{ form.country }}
+      </div>
+      <input id="submit" type="submit" style="visibility:hidden"/>
+    </form>
+  <body>
 
   <script id="marker-template" type="text/temp">
     <img id="img" src="" height=140px width=140px></img>
     </div>
     <span id="caption" style='font-size:10px;color:#999'> </span>
   </script>
+
 </html>

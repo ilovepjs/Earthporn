@@ -14,11 +14,8 @@ class Command(BaseCommand):
 		self.dstk = dstk.DSTK()
 
 	def handle(self, *args, **options):
-		count = 0
 		pattern = re.compile("[\w\s']+|[.,!?;]")
-		for post in self.sub.get_hot():
-			if count >= 15:
-				break
+		for post in self.sub.get_new():
 			if self.contains(post.url):
 				continue
 			title = post.title.encode('ascii', 'ignore')
@@ -29,7 +26,6 @@ class Command(BaseCommand):
 				lon = place[0]['longitude']
 				p = Place(image=post.url, name=name, caption=title, latitude=lat, longitude=lon)
 				p.save()
-				count += 1
 
 		self.stdout.write('Successfully fetched new images')
 
