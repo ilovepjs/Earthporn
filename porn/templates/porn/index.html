@@ -8,8 +8,40 @@
       function initialize() {
         earth = new WE.map('earth_div');
         WE.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(earth);
+        addControllers();
         addMarkers();
       }
+    
+      function addControllers() {
+        $("body").keydown(function(e) {
+          c = earth.getPosition();
+          zoom = Math.round(earth.getZoom());
+          offset = 1.5
+          switch (e.which) {
+            case 37: //left arrow
+              earth.setCenter([c[0], c[1] - offset]);
+              break;
+            case 38: //up arrow
+              earth.setCenter([c[0] + offset, c[1]]);
+              break;
+            case 39: //right arrow
+              earth.setCenter([c[0], c[1] + offset]);
+              break;
+            case 40: //down arrow
+              earth.setCenter([c[0] - offset, c[1]]);
+              break;
+            case 190: // . pressed
+              earth.setZoom(zoom - 0.5)
+              break;
+            case 191: // / pressed
+              earth.setZoom(zoom + 0.5)
+              break;
+            default:
+              //nothing
+          }
+        });
+      }
+
       function addMarkers() {
         p = {{places|safe}}
         for (i = 0; i < p.length; i ++) {
