@@ -16,8 +16,12 @@
           lat = p[i]['fields']['latitude'];
           lon = p[i]['fields']['longitude']
           marker = WE.marker([lat, lon]).addTo(earth);
-          marker.bindPopup("<b>Hello world!</b><br>I am a popup.<br /><span style='font-size:10px;color:#999'>Tip: Another popup is hidden in Cairo..</span>", {maxWidth: 150, closeButton: true}).openPopup();
-  
+
+          var popupTemplate = $("#marker-template").html();
+          var $popup = $("<div/>").html(popupTemplate);
+          $popup.find("#img").attr("src", p[i]['pk']);
+          $popup.find("#caption").text(p[i]['fields']['caption']);
+          marker.bindPopup($popup.html(), {maxWidth: 150, closeButton: true});
         }
       }
     </script>
@@ -29,4 +33,10 @@
   <body onload="initialize()">
     <div id="earth_div"></div>
   </body>
+
+  <script id="marker-template" type="text/temp">
+    <img id="img" src="" height=140px width=140px></img>
+    </div>
+    <span id="caption" style='font-size:10px;color:#999'> </span>
+  </script>
 </html>
