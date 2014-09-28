@@ -3,6 +3,8 @@ earthporn
 
 A beautiful visualisation of images from reddit.com/r/earthporn.
 
+Uses Python 2.7
+
 To get it up and running:
 
   - git clone https://github.com/ilovepjs/earthporn.git
