@@ -14,6 +14,7 @@ To get it up and running:
   - Go to 127.0.0.1:8000
 
 To fetch new images:
+
   NOTE: This does not need to be done as there are already images but it can be used to add more.
 
   - python manage.py fetch_images
