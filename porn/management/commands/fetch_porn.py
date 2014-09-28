@@ -3,7 +3,7 @@ import dstk
 import re
 from django.core.management.base import BaseCommand, CommandError
 from porn.models import Place, Country
-
+from urllib import urlopen
 
 class Command(BaseCommand):
     help = 'Fetches new images from /r/earthporn'
@@ -16,8 +16,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         pattern = re.compile("[\w\s']+|[.,!?;]")
-        for post in self.sub.get_new():
-            if self.contains(post.url):
+        for post in self.sub.get_top():
+            if self.contains(post.url) or self.invalid_image(post.url):
                 continue
             title = post.title.encode('ascii', 'ignore')
             place = self.dstk.text2places(title)
@@ -34,6 +34,9 @@ class Command(BaseCommand):
 
         self.stdout.write('Successfully fetched new images')
 
+    def invalid_image(self, image):
+        return 'image' not in urlopen(image).info().type
+
     def get_country(self, coords):
         politics = self.dstk.coordinates2politics(coords)
         for type in politics[0]['politics']:
@@ -42,7 +45,7 @@ class Command(BaseCommand):
                 # TODO: Remove hack.
                 if name == 'England':
                     name = 'United Kingdom'
-                return Country.objects.get(country=name)
+                return Country.objects.get(id=name)
         return None
 
     def contains(self, image):
