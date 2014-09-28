@@ -6,6 +6,7 @@ class Place(models.Model):
 	caption = models.CharField(max_length=1200)
 	latitude = models.FloatField()
 	longitude = models.FloatField()
+	country = models.CharField(max_length=400)
 
 	def __unicode__(self):
 		return '{} ({}, {}): {}'.format(

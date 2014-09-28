@@ -9,7 +9,7 @@
     <script type="text/javascript">
       var earth;
       function initialize() {
-        options = { zoom: 4, position: [140.19537,80] };
+        options = { zoom: 5, position: [140.19537,80] };
         earth = new WE.map('earth-div', options);
         WE.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(earth);
 
@@ -77,11 +77,10 @@
     <div id="earth-div"></div>
     <form id="form" action="{% url 'porn:country' %}" method="post" style="position: absolute; left: 20px; bottom: 150px">
       {% csrf_token %}
-      <select name='country' id="dropdown-country" onchange="form.submit()" style="width:250px">
-        countries = {{countries}}
+      <select name='country' id="dropdown-country" onchange="this.form.submit()" style="width:250px">
         <option></option>
         {% for country in countries %}
-          <option value={{country}}>{{country}}</option>
+          <option value='{{country}}'>{{country}}</option>
         {% endfor %}
       </select>
     </form> 
