@@ -61,6 +61,7 @@
           var popupTemplate = $("#marker-template").html();
           var $popup = $("<div/>").html(popupTemplate);
           $popup.find("#img").attr("src", p[i]['pk']);
+          $popup.find("#img-anchor").attr("href", p[i]['pk']);
           $popup.find("#caption").text(p[i]['fields']['caption']);
           marker.bindPopup($popup.html(), {maxWidth: 150, closeButton: true});
         }
@@ -87,7 +88,7 @@
   <body>
 
   <script id="marker-template" type="text/temp">
-    <img id="img" src="" height=140px width=140px></img>
+    <a id='img-anchor' href=''> <img id="img" src="" height=140px width=140px></img> </a>
     </div>
     <span id="caption" style='font-size:10px;color:#999'> </span>
   </script>
