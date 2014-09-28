@@ -1,11 +1,9 @@
-import json
-
 from django.core import serializers
-from django.shortcuts import render, render_to_response, redirect, RequestContext
+from django.shortcuts import render
 from django.views.decorators.http import require_POST
 
-from countries import countries
-from porn.models import Place
+from models import Place
+
 
 def index(request):
 	context = {
@@ -13,7 +11,7 @@ def index(request):
 		'countries' : Place.objects.values_list('country', flat=True).distinct(),
 	}
 	print Place.objects.values_list('country', flat=True).distinct()
-	return render(request, 'porn/index.html', context)
+	return render(request, 'earthporn/index.html', context)
 
 @require_POST
 def country(request):
@@ -26,4 +24,4 @@ def country(request):
 	print country
 	print Place.objects.filter(country=country)
 	# open carosoul and show images
-	return render(request, 'porn/country.html', context)
+	return render(request, 'earthporn/country.html', context)

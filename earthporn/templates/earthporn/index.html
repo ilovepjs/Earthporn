@@ -76,7 +76,7 @@
 
   <body onload="initialize()">
     <div id="earth-div"></div>
-    <form id="form" action="{% url 'porn:country' %}" method="post" style="position: absolute; left: 20px; bottom: 150px">
+    <form id="form" action="{% url 'country' %}" method="post" style="position: absolute; left: 20px; bottom: 150px">
       {% csrf_token %}
       <select name='country' id="dropdown-country" onchange="this.form.submit()" style="width:250px">
         <option></option>

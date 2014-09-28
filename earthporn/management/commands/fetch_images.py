@@ -2,7 +2,7 @@ import praw
 import dstk
 import re
 from django.core.management.base import BaseCommand, CommandError
-from porn.models import Place, Country
+from earthporn.models import Place, Country
 from urllib import urlopen
 
 class Command(BaseCommand):
@@ -16,7 +16,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         pattern = re.compile("[\w\s']+|[.,!?;]")
-        for post in self.sub.get_top():
+        for post in self.sub.get_top(limit=100):
             if self.contains(post.url) or self.invalid_image(post.url):
                 continue
             title = post.title.encode('ascii', 'ignore')
