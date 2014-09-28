@@ -9,7 +9,7 @@ To get it up and running:
   - cd earthporn
   - pip install requirements.txt
   - python manage.py runserver
-  - Go to 127.0.0.1/
+  - Go to 127.0.0.1:8000
 
 To fetch new images:
 
