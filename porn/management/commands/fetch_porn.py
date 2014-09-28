@@ -2,7 +2,7 @@ import praw
 import dstk
 import re
 from django.core.management.base import BaseCommand, CommandError
-from porn.models import Place
+from porn.models import Place, Country
 
 
 class Command(BaseCommand):
@@ -16,7 +16,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         pattern = re.compile("[\w\s']+|[.,!?;]")
-        for post in self.sub.get_hot():
+        for post in self.sub.get_new():
             if self.contains(post.url):
                 continue
             title = post.title.encode('ascii', 'ignore')
@@ -38,7 +38,11 @@ class Command(BaseCommand):
         politics = self.dstk.coordinates2politics(coords)
         for type in politics[0]['politics']:
             if type['friendly_type'] == 'country':
-                return type['name']
+                name = type['name']
+                # TODO: Remove hack.
+                if name == 'England':
+                    name = 'United Kingdom'
+                return Country.objects.get(country=name)
         return None
 
     def contains(self, image):

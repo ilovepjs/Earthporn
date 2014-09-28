@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/nanogallery/5.1.1/css/nanogallery.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/nanogallery/5.1.1/jquery.nanogallery.min.js"></script>
+    <script type="text/javascript">
+      function initialize() {
+        $("#nanoGallery").nanoGallery({
+          'thumbnailHoverEffect' : 'overScale'
+        });
+      }
+    </script>
+
+  </head>
+
+  <body bgcolor="#000000" onload="initialize()">
+    <div id="nanoGallery">
+      {% for p in places %}
+        <a href='{{p.pk}}' data-ngthumb='{{p.pk}}'>{{p.name}}</a>
+      {% endfor %}
+    </div>
+  <body>
+
+</html>

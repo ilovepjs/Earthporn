@@ -10,8 +10,9 @@ from porn.models import Place
 def index(request):
 	context = {
 		'places': serializers.serialize('json', Place.objects.all()),
-		'countries' : countries.keys(),
+		'countries' : Place.objects.values_list('country', flat=True).distinct(),
 	}
+	print Place.objects.values_list('country', flat=True).distinct()
 	return render(request, 'porn/index.html', context)
 
 @require_POST
