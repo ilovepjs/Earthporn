@@ -8,8 +8,9 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.css">
     <script type="text/javascript">
       var earth;
+      var markers = [];
       function initialize() {
-        options = { zoom: 5, position: [140.19537,80] };
+        options = { zoom: 4, position: [140.19537,80] };
         earth = new WE.map('earth-div', options);
         WE.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(earth);
 
@@ -17,38 +18,9 @@
           placeholder: "Browse by avaliable country",
         });
 
-        addControllers();
         addMarkers();
-      }
-
-      function addControllers() {
-        $("body").keydown(function(e) {
-          c = earth.getPosition();
-          zoom = Math.round(earth.getZoom());
-          offset = 1.2
-          switch (e.which) {
-            case 37: //left arrow
-              earth.setCenter([c[0], c[1] - offset]);
-              break;
-            case 38: //up arrow
-              earth.setCenter([c[0] + offset, c[1]]);
-              break;
-            case 39: //right arrow
-              earth.setCenter([c[0], c[1] + offset]);
-              break;
-            case 40: //down arrow
-              earth.setCenter([c[0] - offset, c[1]]);
-              break;
-            case 190: // . pressed
-              earth.setZoom(zoom - 1)
-              break;
-            case 191: // / pressed
-              earth.setZoom(zoom + 1)
-              break;
-            default:
-              //nothing
-          }
-        });
+        rotateEarth();
+        animateMarkers();
       }
 
       function addMarkers() {
@@ -57,6 +29,7 @@
           lat = p[i]['fields']['latitude'];
           lon = p[i]['fields']['longitude']
           marker = WE.marker([lat, lon]).addTo(earth);
+          markers.push(marker);
 
           var popupTemplate = $("#marker-template").html();
           var $popup = $("<div/>").html(popupTemplate);
@@ -66,6 +39,32 @@
           marker.bindPopup($popup.html(), {maxWidth: 150, closeButton: true});
         }
       }
+
+      function rotateEarth() {
+        setInterval(function() {
+          c = earth.getPosition();
+          earth.setCenter([c[0], c[1] + 0.1]);
+        }, 150);
+      }
+
+      function animateMarkers() {
+         var lastm1 = getMarker();
+         var lastm2 = getMarker();
+        setInterval(function() {
+          m1 = getMarker();
+          m2 = getMarker();
+          lastm1.closePopup();
+          lastm2.closePopup();
+          m1.openPopup();          
+          m2.openPopup();
+          lastm1 = m1;
+          lastm2 = m2;          
+        }, 2000);
+      }
+
+      function getMarker() {
+        return markers[Math.floor(Math.random()*markers.length)];
+      }
       </script>
       <style>
         html, body{padding: 0; margin: 0;}
@@ -74,7 +73,7 @@
     </script>
   </head>
 
-  <body onload="initialize()">
+  <body bgcolor="#F0F8FF" onload="initialize()">
     <div id="earth-div"></div>
     <form id="form" style="position: absolute; left: 20px; bottom: 150px">
       {% csrf_token %}
