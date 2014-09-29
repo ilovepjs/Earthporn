@@ -6,21 +6,35 @@
     <script src="http://www.webglearth.com/v2/api.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.css">
+    <style>
+      html, body{padding: 0; margin: 0;}
+      #earth-div{top: 0; right: 0; bottom: 0; left: 0; position: absolute !important;}
+    </style>
+
     <script type="text/javascript">
       var earth;
       var markers = [];
+      var animatedEarth;
+      var animatedMarkers;
+
       function initialize() {
         options = { zoom: 4, position: [140.19537,80] };
         earth = new WE.map('earth-div', options);
-        WE.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(earth);
 
-        $("#dropdown-country").select2({
-          placeholder: "Browse by avaliable country",
-        });
+        $('#play').mouseup(animate);
 
         addMarkers();
-        rotateEarth();
-        animateMarkers();
+        tileEarth().done(animate);
+        browseByCountry();
+      }
+
+      function tileEarth() {
+        var r = $.Deferred();
+        WE.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(earth);
+        setTimeout(function() {
+          r.resolve();
+        }, 2800);
+        return r;
       }
 
       function addMarkers() {
@@ -40,17 +54,24 @@
         }
       }
 
-      function rotateEarth() {
-        setInterval(function() {
+      function animate() {
+        console.log('animate');
+        animateEarth();
+        animateMarkers();
+        $(document).one('mousedown', stopAnimation);        
+      }
+
+      function animateEarth() {
+        animatedEarth = setInterval(function() {
           c = earth.getPosition();
           earth.setCenter([c[0], c[1] + 0.1]);
-        }, 150);
+        }, 85);
       }
 
       function animateMarkers() {
-         var lastm1 = getMarker();
-         var lastm2 = getMarker();
-        setInterval(function() {
+        var lastm1 = getMarker();
+        var lastm2 = getMarker();
+        animatedMarkers = setInterval(function() {
           m1 = getMarker();
           m2 = getMarker();
           lastm1.closePopup();
@@ -62,20 +83,27 @@
         }, 2000);
       }
 
+      function stopAnimation() {
+        console.log('unbinded');
+        clearInterval(animatedEarth);
+        clearInterval(animatedMarkers);
+      }
+
       function getMarker() {
         return markers[Math.floor(Math.random()*markers.length)];
       }
-      </script>
-      <style>
-        html, body{padding: 0; margin: 0;}
-        #earth-div{top: 0; right: 0; bottom: 0; left: 0; position: absolute !important;}
-      </style>
+
+      function browseByCountry() {
+        $("#dropdown-country").select2({
+          placeholder: "Browse by avaliable country",
+        });
+      }
     </script>
   </head>
 
   <body bgcolor="#F0F8FF" onload="initialize()">
     <div id="earth-div"></div>
-    <form id="form" style="position: absolute; left: 20px; bottom: 150px">
+    <form id="form" style="position: absolute; left: 80%; top: 20px">
       {% csrf_token %}
       <select name='country' id="dropdown-country" onchange="changeCountry(this.value)" style="width:250px">
         <option></option>
@@ -84,6 +112,8 @@
         {% endfor %}
       </select>
     </form> 
+
+    <img id="play" width="40px" height="40px" src="/static/web/img/play.png" style="position: absolute; left: 2%; bottom: 5%">
 
     <script type="text/javascript">
       function changeCountry(country_name) {
