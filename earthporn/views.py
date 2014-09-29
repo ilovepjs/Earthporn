@@ -10,18 +10,11 @@ def index(request):
 		'places': serializers.serialize('json', Place.objects.all()),
 		'countries' : Place.objects.values_list('country', flat=True).distinct(),
 	}
-	print Place.objects.values_list('country', flat=True).distinct()
 	return render(request, 'earthporn/index.html', context)
 
-@require_POST
-def country(request):
-	print request.POST
-	country = request.POST.get('country')
-	places = Place.objects.filter(country=country)
+def country(request, country_name):
+	places = Place.objects.filter(country=country_name)
 	context = {
 		'places' : places,
 	}
-	print country
-	print Place.objects.filter(country=country)
-	# open carosoul and show images
 	return render(request, 'earthporn/country.html', context)

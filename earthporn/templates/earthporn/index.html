@@ -76,15 +76,21 @@
 
   <body onload="initialize()">
     <div id="earth-div"></div>
-    <form id="form" action="{% url 'country' %}" method="post" style="position: absolute; left: 20px; bottom: 150px">
+    <form id="form" style="position: absolute; left: 20px; bottom: 150px">
       {% csrf_token %}
-      <select name='country' id="dropdown-country" onchange="this.form.submit()" style="width:250px">
+      <select name='country' id="dropdown-country" onchange="changeCountry(this.value)" style="width:250px">
         <option></option>
         {% for country in countries %}
-          <option value='{{country}}'>{{country}}</option>
+          <option name="country_name" value='{{country}}'>{{country}}</option>
         {% endfor %}
       </select>
     </form> 
+
+    <script type="text/javascript">
+      function changeCountry(country_name) {
+        location.replace('/country/' + country_name)
+      } 
+    </script>
   <body>
 
   <script id="marker-template" type="text/temp">
