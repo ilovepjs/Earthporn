@@ -1,3 +1,6 @@
 django==1.7
 praw==2.1.18
+# The flags are needed due to being externally hosted
+--allow-external dstk 
+--allow-unverified dstk 
 dstk
