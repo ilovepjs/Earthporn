@@ -44,7 +44,6 @@ class Command(BaseCommand):
         for type in politics[0]['politics']:
             if type['friendly_type'] == 'country':
                 name = type['name']
-                print name
                 # TODO: Remove hack.
                 if name == 'England' or name == 'Scotland' or name == 'Wales':
                     name = 'United Kingdom'
