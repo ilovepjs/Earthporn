@@ -39,12 +39,17 @@ class Command(BaseCommand):
 
     def get_country(self, coords):
         politics = self.dstk.coordinates2politics(coords)
+        if politics[0]['politics'] == None:
+            return None
         for type in politics[0]['politics']:
             if type['friendly_type'] == 'country':
                 name = type['name']
+                print name
                 # TODO: Remove hack.
-                if name == 'England':
+                if name == 'England' or name == 'Scotland' or name == 'Wales':
                     name = 'United Kingdom'
+                elif name == 'Iran (Islamic Republic of)':
+                    name = 'Iran, Islamic Republic of'
                 return Country.objects.get(id=name)
         return None
 

@@ -15,6 +15,15 @@ To get it up and running:
 
 To fetch new images:
 
-  NOTE: This does not need to be done as there are already images but it can be used to add more.
+  NOTE: 
+
+  This does not need to be done as there are already images but it can be used to add more.
 
   - python manage.py fetch_images
+
+
+KNOWN BUGS:
+
+  Country matching is not perfect. So valid countries may not always be resolved.
+  https://github.com/ilovepjs/earthporn/issues/1
+   
