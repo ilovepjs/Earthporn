@@ -1,0 +1,1 @@
+web: gunicorn earthporn.wsgi:application --log-file=-
