@@ -16,7 +16,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         pattern = re.compile("[\w\s']+|[.,!?;]")
-        for post in self.sub.get_top(limit=100):
+        for post in self.sub.get_new(limit=500):
             if self.contains(post.url) or self.invalid_image(post.url):
                 continue
             title = post.title.encode('ascii', 'ignore')
@@ -49,6 +49,8 @@ class Command(BaseCommand):
                     name = 'United Kingdom'
                 elif name == 'Iran (Islamic Republic of)':
                     name = 'Iran, Islamic Republic of'
+                elif name == 'United Republic of Tanzania':
+                    name = 'Tanzania, United Republic of'
                 return Country.objects.get(id=name)
         return None
 

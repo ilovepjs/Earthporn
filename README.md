@@ -1,7 +1,7 @@
 Earthporn
 =========
 
-A beautiful visualisation of images from reddit.com/r/earthporn.
+A beautiful visualisation of images from reddit.com/r/earthporn. There's a hosted version over at [http://explorearth.herokuapp.com](http://explorearth.herokuapp.com) if you want to have a play.
 
 Uses Python 2.7
 
@@ -10,7 +10,7 @@ Uses Python 2.7
   - git clone https://github.com/ilovepjs/earthporn.git
   - cd earthporn
   - pip install -r requirements.txt
-  - python manage.py runserver
+  - python manage.py runserver --settings=earthporn.local_settings
   - Go to 127.0.0.1:8000
 
 **To fetch new images**:
