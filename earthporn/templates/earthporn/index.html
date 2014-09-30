@@ -26,6 +26,7 @@
         addMarkers();
         tileEarth().done(animate);
         browseByCountry();
+        addControllers();
       }
 
       function tileEarth() {
@@ -98,6 +99,37 @@
           placeholder: "Browse by avaliable country",
         });
       }
+
+      function addControllers() {
+        $("body").keydown(function(e) {
+          c = earth.getPosition();
+          zoom = Math.round(earth.getZoom());
+          offset = 1.2
+          stopAnimation();
+          switch (e.which) {
+            case 37: //left arrow
+              earth.setCenter([c[0], c[1] - offset]);
+              break;
+            case 38: //up arrow
+              earth.setCenter([c[0] + offset, c[1]]);
+              break;
+            case 39: //right arrow
+              earth.setCenter([c[0], c[1] + offset]);
+              break;
+            case 40: //down arrow
+              earth.setCenter([c[0] - offset, c[1]]);
+              break;
+            case 190: // . pressed
+              earth.setZoom(zoom - 1)
+              break;
+            case 191: // / pressed
+              earth.setZoom(zoom + 1)
+              break;
+            default:
+              //nothing
+          }
+        });
+      }
     </script>
   </head>
 
@@ -114,6 +146,20 @@
     </form> 
 
     <img id="play" width="40px" height="40px" src="/static/web/img/play.png" style="position: absolute; left: 2%; bottom: 5%">
+    <div style="position: absolute; right: 5%; bottom: 4%">
+      <div style="float: right">
+        <br>
+        <img id="play" width="45px" height="45px" src="/static/web/img/cursor.png">
+      </div>
+      <div style="float: left">
+        <font face="verdana">Arrow keys to navigate</font>
+        <br>
+        <font face="verdana">Use / to zoom in</font>
+        <br>
+        <font face="verdana">Use . to zoom out</font>
+        <br>
+      </div>
+    </div>
 
     <script type="text/javascript">
       function changeCountry(country_name) {
