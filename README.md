@@ -1,7 +1,7 @@
 Earthporn
 =========
 
-A beautiful visualisation of images from reddit.com/r/earthporn. There's a hosted version over at [http://explorearth.herokuapp.com](http://explorearth.herokuapp.com) if you want to have a play.
+A beautiful visualisation of images from reddit.com/r/earthporn. There's a hosted version over at [http://earthporn.preeya.me](http://earthporn.preeya.me) if you want to have a play.
 
 Uses Python 2.7
 
