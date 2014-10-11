@@ -16,6 +16,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         pattern = re.compile("[\w\s']+|[.,!?;]")
+        count = 0
         for post in self.sub.get_new(limit=500):
             if self.contains(post.url) or self.invalid_image(post.url):
                 continue
@@ -31,12 +32,14 @@ class Command(BaseCommand):
                     continue
                 p = Place(image=post.url, name=name, caption=title, latitude=lat, longitude=lon, country=country)
                 p.save()
+                count += 1
 
-        self.stdout.write('Successfully fetched new images')
+        self.stdout.write('Successfully fetched {} new images'.format(count))
 
     def invalid_image(self, image):
         return 'image' not in urlopen(image).info().type
 
+    # TODO: Remove hack.
     def get_country(self, coords):
         politics = self.dstk.coordinates2politics(coords)
         if politics[0]['politics'] == None:
@@ -44,13 +47,14 @@ class Command(BaseCommand):
         for type in politics[0]['politics']:
             if type['friendly_type'] == 'country':
                 name = type['name']
-                # TODO: Remove hack.
                 if name == 'England' or name == 'Scotland' or name == 'Wales':
                     name = 'United Kingdom'
                 elif name == 'Iran (Islamic Republic of)':
                     name = 'Iran, Islamic Republic of'
                 elif name == 'United Republic of Tanzania':
                     name = 'Tanzania, United Republic of'
+                elif name == 'Taiwan':
+                    name = 'Taiwan, Province of China'
                 return Country.objects.get(id=name)
         return None
 
